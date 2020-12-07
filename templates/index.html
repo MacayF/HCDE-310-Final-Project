@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <link rel="stylesheet"type="text/css"href="{{ url_for('static', filename='style.css') }}"/>
+    </head>
+    <body>
+        <p>Hello and welcome to ThirdWheel!</p>
+        {% if 'image' in data %}
+        <img src="{{ url_for('static', filename='eagle.png') }}" alt="eagle image"/>
+        {% endif %}
+    </body>
+    <form action="/" method="post">
+        <label for="radius">please enter a radius in miles (limit 23 miles):</label>
+        <input type="number" id="radius" name="radius" min="1" max="23" value="1"/><br />
+        <label for="category">Choose a category:</label>
+        <select id="category" name="category">
+            <option value="breakfast_brunch">Breakfast & Brunch</option>
+            <option value="burgers">Burgers</option>
+            <option value="chinese">Chinese</option>
+            <option value="indpak">Indian</option>
+            <option value="italian">Italian</option>
+            <option value="japanese">Japanese</option>
+            <option value="korean">Korean</option>
+            <option value="mexican">Mexican</option>
+            <option value="mideastern">Middle Eastern</option>
+            <option value="thai">Thai</option>
+        </select><br />
+        <input type="submit" value="Go" name="gobtn"/>
+    </form>
+    <div>
+        <p>Your radius:</p>
+        {% if 'radius' in data %}
+            <p>{{data['radius']}}</p>
+        {% endif %}
+
+        {% for restaurant in list %}
+            <p>{{restaurant}}</p>
+        {% endfor %}
+    </div>
+</html>
