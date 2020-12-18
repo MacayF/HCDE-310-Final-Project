@@ -2,40 +2,59 @@
 <html>
     <head>
         <title>{{title}}</title>
-        <link rel="stylesheet"type="text/css"href="{{ url_for('static', filename='style.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="../static/style.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+
+        <script>
+
+        function getLocation() {
+            document.getElementById('address').disabled = true;
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(fillPosition);
+            } else{
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+        function fillPosition(position){
+            var lat = document.getElementById("lat");
+            var lon = document.getElementById("lng");
+            lat.value = position.coords.latitude;
+            lon.value = position.coords.longitude;
+
+            document.getElementById("address").value = position.coords.latitude + ', ' + position.coords.longitude;
+        }
+        </script>
+
+
     </head>
     <body>
-        <p>Hello and welcome to ThirdWheel!</p>
+        <h1>Hello and welcome to ThirdWheel!</h1>
         {% if 'image' in data %}
         <img src="{{ url_for('static', filename='eagle.png') }}" alt="eagle image"/>
         {% endif %}
     </body>
-    <form action="/" method="post">
+
+    <form action="go" method="post">
+        <label for="address">Address</label>
+        <input type="text" name="address" id="address" style="width:300px;" placeholder="123 Main Street, New York, NY 10030" required/><br />
+
+        <input type="hidden" name="lat" id="lat" value="0"/>
+        <input type="hidden" name="lng" id="lng" value="0"/>
+        <input type="button" value="Use my current location." name="getLoc" id="getLoc" onclick="getLocation()" onclick="toggleViews()"/><br /><br />
+
         <label for="radius">please enter a radius in miles (limit 23 miles):</label>
         <input type="number" id="radius" name="radius" min="1" max="23" value="1"/><br />
-        <label for="category">Choose a category:</label>
-        <select id="category" name="category">
-            <option value="breakfast_brunch">Breakfast & Brunch</option>
-            <option value="burgers">Burgers</option>
-            <option value="chinese">Chinese</option>
-            <option value="indpak">Indian</option>
-            <option value="italian">Italian</option>
-            <option value="japanese">Japanese</option>
-            <option value="korean">Korean</option>
-            <option value="mexican">Mexican</option>
-            <option value="mideastern">Middle Eastern</option>
-            <option value="thai">Thai</option>
-        </select><br />
+
+        <label for="term">Optional Search Term</label>
+        <input type="text" name="term" id="term" pattern="[A-Za-z]{1,}"
+               oninvalid="this.setCustomValidity('Ivalid: No Numbers, Special Characters, or Spaces')"
+               oninput="this.setCustomValidity('')"
+               placeholder="eg. pizza, boba, mexican" autocomplete="off"/><br />
+        <div>
+          <input type="checkbox" id="open-now" name="open-now" value="open" checked>
+          <label for="open-now">Only Show Restaurants Open Now</label>
+        </div>
         <input type="submit" value="Go" name="gobtn"/>
     </form>
-    <div>
-        <p>Your radius:</p>
-        {% if 'radius' in data %}
-            <p>{{data['radius']}}</p>
-        {% endif %}
-
-        {% for restaurant in list %}
-            <p>{{restaurant}}</p>
-        {% endfor %}
-    </div>
 </html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <link rel="stylesheet" type="text/css" href="../static/style.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+
+        <script type="text/javascript">
+
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: {{data['coordinates']['latitude']}}, lng: {{data['coordinates']['longitude']}}},
+                    zoom: 18
+                });
+            }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ googlekey }}&callback=initMap"></script>
+
+
+    </head>
+    <body>
+        <h1>ThirdWheel</h1>
+        <form action="/" method="post">
+            <input type="submit" value="Go Home" name="home"/>
+        </form>
+        <h2>Congrats! You're going to <a href="{{ data['url'] }}" target="_blank">{{ data['name'] }}!</a></h2>
+        <p>{{ data['location']['address1'] }}</p>
+
+    </body>
+
+    <div id="map"></div>
+
+    <div class="panel">
+        <div id="pictures">
+        {% for photo in data['photos'] %}
+            <img src="{{ photo }}" alt="food image"/>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div id="button">
+        <a href="{{ data['url'] }}" target="_blank" ><h2>Go To {{ data['name'] }}'s Yelp Page<h2/></a>
+    </div>
+
+
+</html>

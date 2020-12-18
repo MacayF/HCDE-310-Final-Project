@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <link rel="stylesheet" type="text/css" href="../static/style.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+
+        <script>
+            function check3(obj) {
+                if (document.querySelectorAll('input[type=checkbox]:checked').length > 3) {
+                    document.getElementById(obj).checked = false;
+                }
+                else if (document.querySelectorAll('input[type=checkbox]:checked').length == 3){
+                    document.getElementById("submit").disabled = false;
+                    document.getElementById(obj).value = obj;
+                }
+                else {
+                    document.getElementById("submit").disabled = true;
+                    document.getElementById(obj).value = obj;
+                }
+            }
+        </script>
+
+
+    </head>
+    <body>
+        <h1>ThirdWheel</h1>
+        <form action="/" method="post">
+            <input type="submit" value="Go Home" name="home"/>
+        </form>
+        <p>Partner 1's Turn:</p>
+        <h2>Select Your Top 3 Choices</h2>
+
+    </body>
+
+    <div>
+        <form action="select" method="post">
+            <div id="gallery">
+                {% for restaurant in dict %}
+                <input type="checkbox" class="option" id="{{ dict[restaurant]['id'] }}" name="option" value="not selected" onchange="check3(this.id)"/>
+                <label for="{{ dict[restaurant]['id'] }}" class="card">
+                    <img src="{{ dict[restaurant]['photos'][0] }}" alt="food image"/>
+                    <h2>{{dict[restaurant]['name']}}</h2>
+                    <p>Price: {{ dict[restaurant]['price'] }}</p>
+                    <p>Rating: {{ dict[restaurant]['rating'] }}</p>
+                    <a href="{{ dict[restaurant]['url'] }}" target="_blank"><img id="info" src="{{ url_for('static', filename='info.png') }}" alt="info"/></a>
+                </label>
+                {% endfor %}
+            </div>
+            <input type="submit" value="continue" name="continue" id="submit" disabled="true"/>
+        </form>
+    </div>
+</html>

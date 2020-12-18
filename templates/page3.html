@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <link rel="stylesheet" type="text/css" href="../static/style.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+
+        <script>
+            function check3(obj) {
+                if (document.querySelectorAll('input[type=checkbox]:checked').length > 1) {
+                    options = document.querySelectorAll("input[type=checkbox]");
+                    for (i = 0; i < options.length; i++) {
+                      options[i].checked = false
+                      document.getElementById(obj).value = "not selected";
+                    }
+                    document.getElementById(obj).value = obj;
+                    document.getElementById(obj).checked = true;
+                }
+                else {
+                    document.getElementById(obj).value = obj;
+                    document.getElementById("submit").disabled = false;
+                }
+            }
+        </script>
+
+
+    </head>
+    <body>
+        <h1>ThirdWheel</h1>
+        <form action="/" method="post">
+            <input type="submit" value="Go Home" name="home"/>
+        </form>
+        <p>Partner 2's Turn:</p>
+        <h2>Choose Your Restaurant</h2>
+
+    </body>
+
+    <div>
+        <form action="map" method="post">
+            <div id="gallery">
+                {% for restaurant in data %}
+                <input type="checkbox" class="option" id="{{ data[restaurant]['id'] }}" name="option" value="not selected" onchange="check3(this.id)"/>
+                <label for="{{ data[restaurant]['id'] }}" class="card">
+                    <img src="{{ data[restaurant]['photos'][0] }}" alt="food image"/>
+                    <h2>{{ data[restaurant]['name']}}</h2>
+                    <p>Price: {{ data[restaurant]['price'] }}</p>
+                    <p>Rating: {{ data[restaurant]['rating'] }}</p>
+                    <a href="{{ data[restaurant]['url'] }}" target="_blank"><img id="info" src="{{ url_for('static', filename='info.png') }}" alt="info"/></a>
+                </label>
+                {% endfor %}
+            </div>
+            <input type="submit" value="select" name="select" id="submit" disabled="true"/>
+        </form>
+    </div>
+</html>
