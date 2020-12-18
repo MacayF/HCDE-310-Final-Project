@@ -5,8 +5,6 @@ import random
 
 app = Flask(__name__)
 
-#Macay Fischer
-
 def pretty(obj):
     return json.dumps(obj, sort_keys=True, indent=2)
 
